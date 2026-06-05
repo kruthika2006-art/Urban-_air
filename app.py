@@ -42,16 +42,10 @@ if uploaded_file is not None:
             "number_of_monitoring_stations"
         ]
 
-        missing_columns = [
-            col for col in required_columns
-            if col not in df.columns
-        ]
+        st.subheader("Actual Columns in Dataset")
+st.write(df.columns.tolist())
 
-        if missing_columns:
-            st.error(
-                f"Missing columns: {missing_columns}"
-            )
-            st.stop()
+st.stop()
 
         # Convert AQI to numeric
         df["aqi_value"] = pd.to_numeric(

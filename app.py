@@ -14,17 +14,38 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file:
 
-    df = pd.read_csv(uploaded_file)
+   df = pd.read_csv(uploaded_file)
 
-    st.subheader("Dataset Preview")
-    st.dataframe(df.head())
+
+df.columns = (
+    df.columns
+      .str.strip()
+      .str.lower()
+      .str.replace(" ", "_")
+)
+
+st.subheader("Dataset Preview")
+st.dataframe(df.head())
+
+# Debug: show actual columns
+st.write("Columns Found:")
+st.write(df.columns.tolist())
 
     st.subheader("AQI Distribution")
+
+   if "aqi_value" in df.columns:
 
     fig = px.histogram(
         df,
         x="aqi_value"
     )
+
+    st.plotly_chart(fig, use_container_width=True)
+
+else:
+
+    st.error(f"aqi_value column not found. Available columns: {df.columns.tolist()}")
+    st.stop()
 
     st.plotly_chart(fig, use_container_width=True)
 
